@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Info Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #150925 0%, #F0D8FF 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            color: #150925;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            color: #150925;
+            font-weight: 500;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"] {
+            width: 100%;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: white;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="tel"]:focus {
+            outline: none;
+            border-color: #150925;
+            box-shadow: 0 4px 10px rgba(21, 9, 37, 0.2);
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, #150925 0%, #4a2c6d 100%);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(21, 9, 37, 0.3);
+            margin-top: 10px;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(21, 9, 37, 0.4);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        button[type="submit"].success {
+            background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+        }
+
+        button[type="submit"].success:hover {
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.5);
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 500;
+            min-height: 24px;
+        }
+
+        #result.success-message {
+            color: #2e7d32;
+        }
+
+        #result.error-message {
+            color: #d32f2f;
+        }
+
+        #result.submitting {
+            color: #150925;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h2>Customer Information Form</h2>
+        <!-- Google Apps Script Web App URL
+             Replace the ACTION URL below with your own Apps Script Web App URL after deploying it
+        -->
+        <form id="customerForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <label for="phone">Phone (Optional):</label>
+            <input type="tel" id="phone" name="phone">
+            <button type="submit" id="submitButton">Submit</button>
+        </form>
+        <div id="result"></div>
+    </div>
+    <script>
+        // REPLACE this with your Apps Script Web App URL after deployment
+        const scriptURL = "https://script.google.com/macros/s/AKfycbxcVyIRxPi-mS660TSLbRjh2HyT9u5-kOoZkZlTvQdt_Sw8M8gasKLSa99X0wk94OTp/exec";
+
+        const form = document.getElementById('customerForm');
+        const result = document.getElementById('result');
+        const submitButton = document.getElementById('submitButton');
+        let resetTimeout = null;
+
+        function resetButton() {
+            submitButton.classList.remove('success');
+            result.classList.remove('success-message');
+            result.textContent = '';
+        }
+
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // Clear any existing timeout
+            if (resetTimeout) {
+                clearTimeout(resetTimeout);
+            }
+            
+            // Reset button state if it was in success state
+            resetButton();
+            
+            // Show submitting state
+            result.textContent = "Submitting ...";
+            result.className = 'submitting';
+
+            const formData = new FormData(form);
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(response => {
+                    if (response.ok) {
+                        // Success: turn button green and show message
+                        submitButton.classList.add('success');
+                        result.textContent = "Thank you! Your information has been submitted.";
+                        result.className = 'success-message';
+                        form.reset();
+                        
+                        // Reset button after 10 seconds
+                        resetTimeout = setTimeout(() => {
+                            resetButton();
+                        }, 10000);
+                    } else {
+                        result.textContent = "Error submitting. Please try again.";
+                        result.className = 'error-message';
+                    }
+                })
+                .catch(error => {
+                    result.textContent = "Error submitting. Please check your connection and try again.";
+                    result.className = 'error-message';
+                });
+        });
+    </script>
+    <!-- 
+      You need to create a Google Apps Script to receive and save the form data to your Google Sheet.
+      Example Google Apps Script "Code.gs":
+
+      function doPost(e) {
+        var sheet = SpreadsheetApp.openById("https://docs.google.com/spreadsheets/d/1AyEOhnteQgBBTuhP-DA6qkNY4BACHT9CDtiemYJO6XI/edit").getSheetByName("Sheet1");
+        var data = [
+          new Date(),
+          e.parameter.name,
+          e.parameter.email,
+          e.parameter.phone
+        ];
+        sheet.appendRow(data);
+        return ContentService.createTextOutput("Success");
+      }
+
+      Deploy this as a "Web App" (Deploy -> New deployment -> Web app) and set access as "Anyone".
+      Use the given Web App URL as 'scriptURL' in the JS above.
+    -->
+</body>
+</html>
