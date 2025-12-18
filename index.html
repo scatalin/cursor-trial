@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Info Form</title>
     <style>
         * {
@@ -121,6 +122,95 @@
 
         #result.submitting {
             color: #150925;
+        }
+
+        /* Tablet and Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+                align-items: flex-start;
+                padding-top: 30px;
+            }
+
+            .form-container {
+                padding: 30px 25px;
+                border-radius: 15px;
+                max-width: min(500px, 100%);
+            }
+
+            h2 {
+                font-size: 24px;
+                margin-bottom: 25px;
+            }
+
+            label {
+                font-size: 14px;
+                margin-bottom: 6px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"] {
+                padding: 14px 16px;
+                margin-bottom: 18px;
+                font-size: 16px; /* Prevents zoom on iOS */
+                border-radius: 8px;
+            }
+
+            button[type="submit"] {
+                padding: 14px 28px;
+                font-size: 16px;
+                border-radius: 8px;
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            #result {
+                font-size: 15px;
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+                padding-top: 20px;
+            }
+
+            .form-container {
+                padding: 25px 20px;
+                border-radius: 12px;
+            }
+
+            h2 {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            label {
+                font-size: 13px;
+                margin-bottom: 5px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="tel"] {
+                padding: 12px 14px;
+                margin-bottom: 16px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+
+            button[type="submit"] {
+                padding: 14px 24px;
+                font-size: 16px;
+                border-radius: 8px;
+            }
+
+            #result {
+                font-size: 14px;
+                margin-top: 12px;
+            }
         }
     </style>
 </head>
