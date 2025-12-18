@@ -22,6 +22,7 @@
         }
 
         .form-container {
+            position: relative;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
@@ -124,6 +125,48 @@
             color: #150925;
         }
 
+        .language-selector {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
+
+        .language-selector button {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 8px 10px;
+            font-size: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            min-width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .language-selector button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(21, 9, 37, 0.2);
+            border-color: #150925;
+        }
+
+        .language-selector button.active {
+            border-color: #150925;
+            background: linear-gradient(135deg, #150925 0%, #4a2c6d 100%);
+            box-shadow: 0 4px 15px rgba(21, 9, 37, 0.3);
+            transform: scale(1.1);
+        }
+
+        .language-selector button:active {
+            transform: scale(0.95);
+        }
+
         /* Tablet and Mobile Responsive Styles */
         @media (max-width: 768px) {
             body {
@@ -169,6 +212,19 @@
                 font-size: 15px;
                 margin-top: 15px;
             }
+
+            .language-selector {
+                gap: 6px;
+                margin-bottom: 18px;
+                padding-top: 8px;
+            }
+
+            .language-selector button {
+                padding: 6px 8px;
+                font-size: 18px;
+                min-width: 36px;
+                height: 36px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -211,27 +267,178 @@
                 font-size: 14px;
                 margin-top: 12px;
             }
+
+            .language-selector {
+                gap: 4px;
+                margin-bottom: 15px;
+                padding-top: 6px;
+            }
+
+            .language-selector button {
+                padding: 5px 6px;
+                font-size: 16px;
+                min-width: 32px;
+                height: 32px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="form-container">
-        <h2>Customer Information Form</h2>
+        <div class="language-selector">
+            <button type="button" class="lang-btn" data-lang="en" title="English">🇬🇧</button>
+            <button type="button" class="lang-btn" data-lang="ro" title="Română">🇷🇴</button>
+            <button type="button" class="lang-btn" data-lang="es" title="Español">🇪🇸</button>
+            <button type="button" class="lang-btn" data-lang="fr" title="Français">🇫🇷</button>
+            <button type="button" class="lang-btn" data-lang="de" title="Deutsch">🇩🇪</button>
+            <button type="button" class="lang-btn" data-lang="it" title="Italiano">🇮🇹</button>
+            <button type="button" class="lang-btn" data-lang="hu" title="Magyar">🇭🇺</button>
+        </div>
+        <h2 data-i18n="title">Customer Information Form</h2>
         <!-- Google Apps Script Web App URL
              Replace the ACTION URL below with your own Apps Script Web App URL after deploying it
         -->
         <form id="customerForm">
-            <label for="name">Name:</label>
+            <label for="name" data-i18n="name">Name:</label>
             <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
+            <label for="email" data-i18n="email">Email:</label>
             <input type="email" id="email" name="email" required>
-            <label for="phone">Phone (Optional):</label>
+            <label for="phone" data-i18n="phone">Phone (Optional):</label>
             <input type="tel" id="phone" name="phone">
-            <button type="submit" id="submitButton">Submit</button>
+            <button type="submit" id="submitButton" data-i18n="submit">Submit</button>
         </form>
         <div id="result"></div>
     </div>
     <script>
+        // Translations object
+        const translations = {
+            en: {
+                title: "Customer Information Form",
+                name: "Name:",
+                email: "Email:",
+                phone: "Phone (Optional):",
+                submit: "Submit",
+                submitting: "Submitting ...",
+                success: "Thank you! Your information has been submitted.",
+                error: "Error submitting. Please try again.",
+                errorConnection: "Error submitting. Please check your connection and try again."
+            },
+            ro: {
+                title: "Formular Informații Clienți",
+                name: "Nume:",
+                email: "Email:",
+                phone: "Telefon (Opțional):",
+                submit: "Trimite",
+                submitting: "Se trimite ...",
+                success: "Mulțumim! Informațiile dvs. au fost trimise.",
+                error: "Eroare la trimitere. Vă rugăm să încercați din nou.",
+                errorConnection: "Eroare la trimitere. Vă rugăm să verificați conexiunea și să încercați din nou."
+            },
+            es: {
+                title: "Formulario de Información del Cliente",
+                name: "Nombre:",
+                email: "Correo electrónico:",
+                phone: "Teléfono (Opcional):",
+                submit: "Enviar",
+                submitting: "Enviando ...",
+                success: "¡Gracias! Su información ha sido enviada.",
+                error: "Error al enviar. Por favor, inténtelo de nuevo.",
+                errorConnection: "Error al enviar. Por favor, verifique su conexión e inténtelo de nuevo."
+            },
+            fr: {
+                title: "Formulaire d'Information Client",
+                name: "Nom:",
+                email: "Email:",
+                phone: "Téléphone (Optionnel):",
+                submit: "Soumettre",
+                submitting: "Envoi en cours ...",
+                success: "Merci! Vos informations ont été envoyées.",
+                error: "Erreur lors de l'envoi. Veuillez réessayer.",
+                errorConnection: "Erreur lors de l'envoi. Veuillez vérifier votre connexion et réessayer."
+            },
+            de: {
+                title: "Kundeninformationsformular",
+                name: "Name:",
+                email: "E-Mail:",
+                phone: "Telefon (Optional):",
+                submit: "Absenden",
+                submitting: "Wird gesendet ...",
+                success: "Vielen Dank! Ihre Informationen wurden übermittelt.",
+                error: "Fehler beim Senden. Bitte versuchen Sie es erneut.",
+                errorConnection: "Fehler beim Senden. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+            },
+            it: {
+                title: "Modulo Informazioni Cliente",
+                name: "Nome:",
+                email: "Email:",
+                phone: "Telefono (Opzionale):",
+                submit: "Invia",
+                submitting: "Invio in corso ...",
+                success: "Grazie! Le tue informazioni sono state inviate.",
+                error: "Errore durante l'invio. Riprova.",
+                errorConnection: "Errore durante l'invio. Controlla la connessione e riprova."
+            },
+            hu: {
+                title: "Ügyfél Információs Űrlap",
+                name: "Név:",
+                email: "Email:",
+                phone: "Telefon (Opcionális):",
+                submit: "Küldés",
+                submitting: "Küldés ...",
+                success: "Köszönjük! Az információit elküldtük.",
+                error: "Hiba a küldés során. Kérjük, próbálja újra.",
+                errorConnection: "Hiba a küldés során. Kérjük, ellenőrizze az internetkapcsolatot és próbálja újra."
+            }
+        };
+
+        // Language management
+        let currentLanguage = localStorage.getItem('selectedLanguage') || 
+                             (navigator.language.split('-')[0] in translations ? navigator.language.split('-')[0] : 'en');
+
+        // If browser language not supported, default to English
+        if (!translations[currentLanguage]) {
+            currentLanguage = 'en';
+        }
+
+        function updateLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('selectedLanguage', lang);
+            document.documentElement.lang = lang;
+            
+            // Update all elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+        }
+
+        // Initialize language selector buttons
+        const langButtons = document.querySelectorAll('.lang-btn');
+        
+        function setActiveLanguage(lang) {
+            langButtons.forEach(btn => {
+                if (btn.getAttribute('data-lang') === lang) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const lang = e.target.getAttribute('data-lang');
+                updateLanguage(lang);
+                setActiveLanguage(lang);
+            });
+        });
+
+        // Set initial language
+        updateLanguage(currentLanguage);
+        setActiveLanguage(currentLanguage);
+
         // REPLACE this with your Apps Script Web App URL after deployment
         const scriptURL = "https://script.google.com/macros/s/AKfycbxcVyIRxPi-mS660TSLbRjh2HyT9u5-kOoZkZlTvQdt_Sw8M8gasKLSa99X0wk94OTp/exec";
 
@@ -258,7 +465,7 @@
             resetButton();
             
             // Show submitting state
-            result.textContent = "Submitting ...";
+            result.textContent = translations[currentLanguage].submitting;
             result.className = 'submitting';
 
             const formData = new FormData(form);
@@ -268,7 +475,7 @@
                     if (response.ok) {
                         // Success: turn button green and show message
                         submitButton.classList.add('success');
-                        result.textContent = "Thank you! Your information has been submitted.";
+                        result.textContent = translations[currentLanguage].success;
                         result.className = 'success-message';
                         form.reset();
                         
@@ -277,12 +484,12 @@
                             resetButton();
                         }, 10000);
                     } else {
-                        result.textContent = "Error submitting. Please try again.";
+                        result.textContent = translations[currentLanguage].error;
                         result.className = 'error-message';
                     }
                 })
                 .catch(error => {
-                    result.textContent = "Error submitting. Please check your connection and try again.";
+                    result.textContent = translations[currentLanguage].errorConnection;
                     result.className = 'error-message';
                 });
         });
