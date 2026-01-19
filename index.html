@@ -343,6 +343,8 @@
             <input type="email" id="email" name="email" required>
             <label for="phone" data-i18n="phone">Phone (Optional):</label>
             <input type="tel" id="phone" name="phone">
+            <label for="date" data-i18n="eventDate">Event Date:</label>
+            <input type="text" id="date" name="date">
             <button type="submit" id="submitButton" data-i18n="submit">Submit</button>
         </form>
         <div id="result"></div>
@@ -355,6 +357,7 @@
                 name: "Name:",
                 email: "Email:",
                 phone: "Phone (Optional):",
+                eventDate: "Event Date:",
                 submit: "Submit",
                 submitting: "Submitting ...",
                 success: "Thank you! Your information has been submitted.",
@@ -366,6 +369,7 @@
                 name: "Nume:",
                 email: "Email:",
                 phone: "Telefon (Opțional):",
+                eventDate: "Data Evenimentului:",
                 submit: "Trimite",
                 submitting: "Se trimite ...",
                 success: "Mulțumim! Informațiile dvs. au fost trimise.",
@@ -377,6 +381,7 @@
                 name: "Nombre:",
                 email: "Correo electrónico:",
                 phone: "Teléfono (Opcional):",
+                eventDate: "Fecha del Evento:",
                 submit: "Enviar",
                 submitting: "Enviando ...",
                 success: "¡Gracias! Su información ha sido enviada.",
@@ -388,6 +393,7 @@
                 name: "Nom:",
                 email: "Email:",
                 phone: "Téléphone (Optionnel):",
+                eventDate: "Date de l'Événement:",
                 submit: "Soumettre",
                 submitting: "Envoi en cours ...",
                 success: "Merci! Vos informations ont été envoyées.",
@@ -399,6 +405,7 @@
                 name: "Name:",
                 email: "E-Mail:",
                 phone: "Telefon (Optional):",
+                eventDate: "Veranstaltungsdatum:",
                 submit: "Absenden",
                 submitting: "Wird gesendet ...",
                 success: "Vielen Dank! Ihre Informationen wurden übermittelt.",
@@ -410,6 +417,7 @@
                 name: "Nome:",
                 email: "Email:",
                 phone: "Telefono (Opzionale):",
+                eventDate: "Data dell'Evento:",
                 submit: "Invia",
                 submitting: "Invio in corso ...",
                 success: "Grazie! Le tue informazioni sono state inviate.",
@@ -421,6 +429,7 @@
                 name: "Név:",
                 email: "Email:",
                 phone: "Telefon (Opcionális):",
+                eventDate: "Esemény Dátuma:",
                 submit: "Küldés",
                 submitting: "Küldés ...",
                 success: "Köszönjük! Az információit elküldtük.",
@@ -478,7 +487,7 @@
         setActiveLanguage(currentLanguage);
 
         // REPLACE this with your Apps Script Web App URL after deployment
-        const scriptURL = "https://script.google.com/macros/s/AKfycbxcVyIRxPi-mS660TSLbRjh2HyT9u5-kOoZkZlTvQdt_Sw8M8gasKLSa99X0wk94OTp/exec";
+        const scriptURL = "https://script.google.com/macros/s/AKfycbzo_ue1hAeKBJpVciDFzj6j-hKM4hDU1RrzOt-GrWo4Ec_3wBclXdCHml9xAgRfJMdU/exec";
 
         const form = document.getElementById('customerForm');
         const result = document.getElementById('result');
